@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>WebSocket Chat Client</title>
+  </head>
+  <body>
+    <h1>WebSocket Chat Client</h1>
+    <form>
+      <label>
+        Message:
+        <input type="text" id="message" />
+      </label>
+      <button type="submit">Send</button>
+    </form>
+    <ul id="messages"></ul>
+
+    <script>
+      const socket = new WebSocket('ws://localhost:8080');
+
+      socket.addEventListener('open', function (event) {
+        console.log('WebSocket connection established.');
+      });
+
+      socket.addEventListener('message', function (event) {
+        console.log('Received message:', event.data);
+        addMessage(event.data);
+      });
+
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const input = document.querySelector('#message');
+        const message = input.value;
+        input.value = '';
+        console.log('Sending message:', message);
+        socket.send(message);
+      });
+
+      function addMessage(message) {
+        const messages = document.querySelector('#messages');
+        const li = document.createElement('li');
+        li.textContent = message;
+        messages.appendChild(li);
+      }
+    </script>
+  </body>
+</html>
