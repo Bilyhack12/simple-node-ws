@@ -8,7 +8,8 @@ server.on('connection', function (socket) {
   console.log('Client connected.');
   clients.add(socket);
 
-  socket.on('message', function (message) {
+  socket.on('message', function (msg) {
+    let message = msg.toString();
     console.log('Received message:', message);
 
     // Broadcast the message to all connected clients
